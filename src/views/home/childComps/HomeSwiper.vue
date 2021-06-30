@@ -8,7 +8,7 @@
   </swiper>
 </template>
 
-<script>
+<script scoped>
 import {Swiper,SwiperItem} from '@/components/common/swiper'
 
 export default {

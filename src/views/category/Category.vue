@@ -134,7 +134,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .category{
     height: 200px;
     background-color: #bfa;
