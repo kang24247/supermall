@@ -69,6 +69,10 @@ export default {
     this.getHomeGoods("pop")
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
+    this.$bus.$on('itemImagLoad',()=>{
+      // console.log('事件总线方式。。。');
+    this.$refs.scroll.refresh()
+    })
   },
   methods: {
     tabClick(index) {
@@ -91,7 +95,7 @@ export default {
     loadMore(){
       // console.log('上拉加载更多');
       this.getHomeGoods(this.currentType) 
-      this.$refs.scroll.scroll.refresh()
+      
     },
     // 以下是网络请求的相关方法
     getHomeMultidata() {

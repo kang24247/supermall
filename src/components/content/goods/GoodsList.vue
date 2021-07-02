@@ -18,7 +18,8 @@ export default {
         return []
       }
     }
-  }
+  },
+  
 }
 </script>
 
