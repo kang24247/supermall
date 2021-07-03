@@ -3,17 +3,15 @@
     <nav-bar class="home-nav">
       <div class="nav-center" slot="center">购物街</div>
     </nav-bar>
+  <tab-control v-show="isShow" ref="tabControlNew" :titles="titles" @tabClick="tabClick" class="tab-cotrol"></tab-control>
   <scroll class="content" ref="scroll" :probeTypeValue='3' @scrollevent='scrollevent' @pullingUpevent='loadMore'>
-    <home-swiper :banners="banners"></home-swiper>
+    <home-swiper :banners="banners" @swiperImagLoad="swiperImagLoad"></home-swiper>
     <recommend-view :recommends="recommend" />
     <feature-view />
-    <tab-control
-      :titles="titles"
-      class="tabcontrol-pos"
-      @tabClick="tabClick"
-    ></tab-control>
+    <tab-control v-show="!isShow" ref="tabControl" :titles="titles" @tabClick="tabClick"></tab-control>
     <goods-list :goods="goods[currentType].list"></goods-list>
   </scroll>
+
   <back-top @click.native="backTop" v-show="isShowBackTop"/>
   </div>
 </template>
@@ -24,6 +22,7 @@ import TabControl from "@/components/content/tabControl/TabControl";
 import GoodsList from "@/components/content/goods/GoodsList";
 import Scroll from '@/components/common/scroll/Scroll'
 import BackTop from '@/components/content/backTop/BackTop'
+import {debounce} from '@/common/utils'
 
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
@@ -58,8 +57,10 @@ export default {
         sell: { page: 0, list: [] },
       },
       currentType : "pop",
-      isShowBackTop:false
-    };
+      isShowBackTop:false,
+      TabControlOffTop:0,
+      isShow:false
+    }
   },
   created() {
     // 1.请求多个数据给banner和recommend
@@ -72,24 +73,19 @@ export default {
     
   },
   mounted () {
-    const refresh = this.debounce(this.$refs.scroll.refresh,100)
+    const refresh = debounce(this.$refs.scroll.refresh,100)
     
     this.$bus.$on('itemImagLoad',()=>{
       // console.log('事件总线方式。。。');
     // this.$refs.scroll.refresh()
     refresh()
     })
+
+    
   },
   methods: {
-    // 防抖函数 减少refresh执行的次数 降低性能消耗
-    debounce(func,delay){
-      let timer = null
-      return function (...args) {
-        if(timer) clearTimeout(timer)
-        timer = setTimeout(()=>{
-          func.apply(this,args);
-        },delay)
-      }
+    swiperImagLoad(){
+      this.TabControlOffTop = this.$refs.tabControl.$el.offsetTop
     },
     tabClick(index) {
       switch(index){
@@ -103,10 +99,14 @@ export default {
           this.currentType = "sell"
           break
       }
+    this.$refs.tabControlNew.currentindex = index
+    this.$refs.tabControl.currentindex = index
     },
     scrollevent(position){
-      // console.log(position);
+      // 滚动事件监听backtop是否显示与隐藏
       this.isShowBackTop = (-position.y) > 1000 
+      //设置tabCtrol滚动到指定位置便吸顶
+      this.isShow = (-position.y) > this.TabControlOffTop
     },
     loadMore(){
       // console.log('上拉加载更多');
@@ -132,7 +132,6 @@ export default {
     },
     backTop(){
       this.$refs.scroll.scrollTo(0,0)
-      // console.log('-------------');
     }
   }
 };
@@ -163,12 +162,8 @@ export default {
   /* margin-top: 44px; */
   /* top: 44px; */
 }
-
-
-.tabcontrol-pos {
-  position: sticky;
-  top: 44px;
+.tab-cotrol{
+  position: relative;
   z-index: 10;
-  background-color: #fff;
 }
 </style>

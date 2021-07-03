@@ -42,6 +42,7 @@ export default {
     height: 40px;
     line-height: 40px;
     text-align: center;
+    background-color: #fff;
   }
   .tabcontrol-item{
     width: 50px;
