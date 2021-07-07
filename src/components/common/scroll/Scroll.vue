@@ -28,6 +28,7 @@ export default {
 // 而其直接子元素的下面就可以放需要滚动的标签组件等内容了 
 // 使用vue给设定的 ref 属性 能够精确的找到某个元素标签或者组件 避免了重名的影响！    
     this.scroll = new BScroll(this.$refs.scroll,{
+      // observeDOM:false,
       click:true,
       probeType:this.probeTypeValue,
       pullUpLoad:true
@@ -50,6 +51,9 @@ export default {
     },
     refresh(){
       this.scroll && this.scroll.refresh()
+    },
+    getScrollY(){
+      return this.scroll ? this.scroll.y : 0
     }
   }
 }

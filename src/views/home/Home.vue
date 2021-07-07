@@ -3,6 +3,9 @@
     <nav-bar class="home-nav">
       <div class="nav-center" slot="center">购物街</div>
     </nav-bar>
+  <div class="surprise" v-show="showFunny">
+    <img src="@/assets/img/funny/funny.gif">
+  </div>
   <tab-control v-show="isShow" ref="tabControlNew" :titles="titles" @tabClick="tabClick" class="tab-cotrol"></tab-control>
   <scroll class="content" ref="scroll" :probeTypeValue='3' @scrollevent='scrollevent' @pullingUpevent='loadMore'>
     <home-swiper :banners="banners" @swiperImagLoad="swiperImagLoad"></home-swiper>
@@ -59,7 +62,9 @@ export default {
       currentType : "pop",
       isShowBackTop:false,
       TabControlOffTop:0,
-      isShow:false
+      isShow:false,
+      SaveY:0,
+      showFunny:true
     }
   },
   created() {
@@ -70,7 +75,6 @@ export default {
     this.getHomeGoods("pop")
     this.getHomeGoods('new')
     this.getHomeGoods('sell')
-    
   },
   mounted () {
     const refresh = debounce(this.$refs.scroll.refresh,100)
@@ -80,8 +84,17 @@ export default {
     // this.$refs.scroll.refresh()
     refresh()
     })
-
+  
     
+  },
+  // 通过keep-alve缓存 以下activated和deactivated两个函数 实现路由切换之前的页面浏览位置不变
+  activated () {
+    this.$refs.scroll.scrollTo(0,this.SaveY,0)  
+    this.$refs.scroll.refresh()  
+  },
+  deactivated () {
+    this.SaveY = this.$refs.scroll.getScrollY()
+    // console.log('SaveY : '+this.SaveY);
   },
   methods: {
     swiperImagLoad(){
@@ -99,6 +112,7 @@ export default {
           this.currentType = "sell"
           break
       }
+      //使tabctrol两个的样式同步
     this.$refs.tabControlNew.currentindex = index
     this.$refs.tabControl.currentindex = index
     },
@@ -107,12 +121,17 @@ export default {
       this.isShowBackTop = (-position.y) > 1000 
       //设置tabCtrol滚动到指定位置便吸顶
       this.isShow = (-position.y) > this.TabControlOffTop
+      // console.log(position.y)
+
+      // 设置滑稽 滚动到50的高度就隐藏
+      this.showFunny = !((-position.y) > 50)
     },
     loadMore(){
       // console.log('上拉加载更多');
       this.getHomeGoods(this.currentType) 
       
     },
+    
     // 以下是网络请求的相关方法
     getHomeMultidata() {
       getHomeMultidata().then((result) => {
@@ -144,11 +163,18 @@ export default {
 }
 .home-nav {
   background-color: var(--color-tint);
-  position: fixed;
+  position: absolute;
   z-index: 10;
   top: 0;
   left: 0;
   right: 0;
+}
+.surprise img{
+  position: fixed;
+  z-index: 0;
+  width: 100px;
+  height: 100px;
+  left: 36%;
 }
 .nav-center {
   color: #fff;

@@ -34,7 +34,7 @@ export default {
 }
 </script>
 
-<style>
+<style scpoed>
   .tabcontrol{
     display: flex;
     justify-content: space-around;
