@@ -6,6 +6,8 @@
       <detail-base-info :goods='goods'></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
       <detail-goods-info :detailInfo='detailInfo' @infoimageload='infoimageload'></detail-goods-info>
+      <detail-param-info :paramInfo='paramInfo' />
+      <detail-user-evaluate :EvaluateData='EvaluateData'/>
     </scroll>
   </div>
 </template>
@@ -17,10 +19,12 @@ import DetailSwiper from './childComps/DetailSwiper'
 import DetailBaseInfo from './childComps/DetailBaseInfo'
 import DetailShopInfo from './childComps/DetailShopInfo'
 import DetailGoodsInfo from './childComps/DetailGoodsInfo'
+import DetailParamInfo from './childComps/DetailParamInfo'
+import DetailUserEvaluate from './childComps/DetailUserEvaluate'
 
 import Scroll from '@/components/common/scroll/Scroll'
 
-import {getDetail,Goods,Shop} from '../../network/detail'
+import {getDetail,Goods,Shop,GoodsParam} from '../../network/detail'
 
 export default {
   name:"Detail",
@@ -33,7 +37,12 @@ export default {
       detailInfo:{
         desc:'',
         imgdata:''
-      }
+      },
+      paramInfo:{
+        Infos:'',
+        sizes:''
+      },
+      EvaluateData:{}
     }
   },
   components: {
@@ -42,6 +51,8 @@ export default {
     DetailBaseInfo,
     DetailShopInfo,
     DetailGoodsInfo,
+    DetailParamInfo,
+    DetailUserEvaluate,
     Scroll
     
     
@@ -63,7 +74,11 @@ export default {
       // 请求商品详情页的展示图片数据
       this.detailInfo.desc = data.detailInfo.desc
       this.detailInfo.imgdata = data.detailInfo.detailImage[0]
-
+      // 请求商品详情页的规格数据
+      this.paramInfo = new GoodsParam(data.itemParams.info,data.itemParams.rule)
+      //请求商品商品详情页的用户评论数据   评论时间没有找到具体点的毫秒数据 待探索@@@
+      this.EvaluateData = data.rate.list[0]
+      
     })
   },
   methods: {

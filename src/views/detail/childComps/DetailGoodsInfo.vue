@@ -1,8 +1,10 @@
 <template>
   <div class="goods-info">
-    <div class="gradient-left"></div>
-    <div class="element-info">{{detailInfo.desc}}</div>
-    <div class="gradient-right"></div>
+    <div class="describtion">
+      <div class="gradient-left"></div>
+      <div class="element-info">{{detailInfo.desc}}</div>
+      <div class="gradient-right"></div>
+    </div>
     <div class="photo-desc">{{detailInfo.imgdata.key}}</div>
     <ul class="photo-list" v-for="(item,index) in detailInfo.imgdata.list " 
     :key='index'>
@@ -49,19 +51,21 @@
 
 
 <style scoped>
-  
+  .describtion{
+    padding: 20px 10px;
+  }
   .gradient-left{
-    margin-top: 20px;
+    /* margin-top: 20px; */
     height: 2px;
     background-color: green;
     background: linear-gradient(to right,orange,white);
   }
   .element-info{
-    height: 140px;
+    /* height: 140px; */
     padding: 5px 10px;
   }
   .gradient-right{
-    margin-top: 20px;
+    /* margin-top: 20px; */
     height: 2px;
     background-color: green;
     background: linear-gradient(to left,orange,white)
