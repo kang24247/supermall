@@ -57,19 +57,17 @@
   }
   .seller-info .row{
     box-sizing: content-box;
-    /* margin-top: 20px; */
-    height: 40px;
-    padding: 26px 0;
+    padding: 10px 0;
     border-bottom: rgb(231, 226, 226) solid 5px;
     font-size: 15px;
   }
   .seller-info .row .left{
-    height: 100%;
     margin:0 30px 10px 10px;
   }
   .seller-info .row .right{
     float:unset;
     color: rgb(224,134,150);
+    overflow: hidden;
     
   }
 </style>

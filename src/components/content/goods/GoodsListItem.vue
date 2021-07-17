@@ -1,6 +1,6 @@
 <template>
   <div class="goodslistitem" @click="itemClick">
-    <img :src="goodsItem.show.img" @load="imagLoad" >
+    <img :src="showImage" @load="imagLoad" >
     <div class="goodsinfo">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}} </span> 
@@ -28,6 +28,11 @@ export default {
       // console.log('跳转详情页');
       this.$router.push('/detail/'+this.goodsItem.iid)
     }
+  },
+  computed: {
+    showImage(){
+      return this.goodsItem.image || this.goodsItem.show.img
+    }
   }
 }
 </script>
@@ -37,6 +42,7 @@ export default {
     width: 46%;
     padding-bottom: 25px;
     padding: 5px;
+    
   }
   .goodslistitem img{
     width: 100%;

@@ -25,13 +25,14 @@ import TabControl from "@/components/content/tabControl/TabControl";
 import GoodsList from "@/components/content/goods/GoodsList";
 import Scroll from '@/components/common/scroll/Scroll'
 import BackTop from '@/components/content/backTop/BackTop'
-import {debounce} from '@/common/utils'
+// import {debounce} from '@/common/utils'
 
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
 import FeatureView from "./childComps/FeatureView";
 
 import { getHomeMultidata, getHomeGoods } from "@/network/home";
+import {itemListenerMixin} from '@/common/mixin'
 export default {
   name: "Home",
   components: {
@@ -67,6 +68,7 @@ export default {
       showFunny:true
     }
   },
+  mixins: [itemListenerMixin],
   created() {
     // 1.请求多个数据给banner和recommend
     this.getHomeMultidata();
@@ -77,15 +79,9 @@ export default {
     this.getHomeGoods('sell')
   },
   mounted () {
-    const refresh = debounce(this.$refs.scroll.refresh,100)
-    
-    this.$bus.$on('itemImagLoad',()=>{
-      // console.log('事件总线方式。。。');
     // this.$refs.scroll.refresh()
-    refresh()
-    })
-  
-    
+    // console.log('事件总线方式。。。');
+    // console.log('我是首页home里面的内容');
   },
   // 通过keep-alve缓存 以下activated和deactivated两个函数 实现路由切换之前的页面浏览位置不变
   activated () {
@@ -93,8 +89,10 @@ export default {
     this.$refs.scroll.refresh()  
   },
   deactivated () {
+    // console.log('SaveY : '+this.SaveY);保存Y值
     this.SaveY = this.$refs.scroll.getScrollY()
-    // console.log('SaveY : '+this.SaveY);
+    // 取消全局事件的监听
+    this.$bus.$off('itemImagLoad',this.itemImgListener)
   },
   methods: {
     swiperImagLoad(){
@@ -139,7 +137,7 @@ export default {
         this.recommend = result.data.recommend.list;
       });
     },
-    // 接口没有办法用了等待老师回复
+    // 接口问题
     getHomeGoods(type) {
       const page = this.goods[type].page + 1;
       getHomeGoods(type, page).then((result) => {

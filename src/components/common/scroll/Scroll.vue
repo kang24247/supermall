@@ -38,6 +38,7 @@ export default {
       // console.log(position);
       this.$emit("scrollevent", position)
     })
+    
     this.scroll.on('pullingUp',()=>{
       this.$emit('pullingUpevent')
     })

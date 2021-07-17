@@ -8,7 +8,11 @@ export function getDetail(iid){
     }
   })
 }
-
+export function getRecommend(){
+  return request({
+    url: '/recommend'
+  })
+}
 export class Goods{
   constructor(itemInfo,columns,services){
     this.title = itemInfo.title
@@ -39,5 +43,15 @@ export class GoodsParam{
     this.sizes = rule.tables[0]
     //some detail maybe not have value 
     this.image = info.images ? info.images[0] : ''
+  }
+}
+
+export class EvaluateData{
+  constructor(arrone,user){
+    this.content = arrone.content
+    this.createdTime = new Date(arrone.created*1000).toLocaleString().replace(/:\d{1,2}$/,' ')
+    this.style = arrone.style
+    this.avatar = user.avatar
+    this.uname = user.uname
   }
 }
