@@ -15,7 +15,7 @@
         </div>
       </div>
     <div class="rightmenu">
-        <div class="left">加入购物车</div>
+        <div class="left" @click="addCart">加入购物车</div>
         <div class="right">购买</div>
     </div>
   </div>
@@ -32,6 +32,10 @@ export default {
     methods: {
         collectclick(){
             this.isactive = !this.isactive
+        },
+        addCart(){
+            this.$emit('addShoppingCart')
+            
         }
     }
 }

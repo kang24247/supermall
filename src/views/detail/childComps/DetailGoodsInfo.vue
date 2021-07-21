@@ -35,13 +35,11 @@
       // if ( ++this.counter === this.imagesLength ){
         this.$emit("infoimageload")
         // console.log('我进来了');//逻辑没有进去  目前考虑是watch问题 暂未解决
-
       // }
-      // console.log(this.imagesLength);
+    
     }
   },
   // watch: {
-
   //   detailInfo(){
   //     this.imagesLength = this.detailInfo.imgdata.list.length
   //   }

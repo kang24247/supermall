@@ -10,7 +10,9 @@
       <detail-user-evaluate :EvaluateData='EvaluateData' ref="evaluate"/>
       <goods-list :goods='reconmends' ref="recommend"/>
     </scroll>
-    <detail-bottom-bar/>
+    
+    <detail-bottom-bar @addShoppingCart='addShoppingCart'/>
+    <back-top @click.native="backTop" v-show="isShowBackTop"/>
   </div>
 </template>
 
@@ -29,8 +31,9 @@ import Scroll from '@/components/common/scroll/Scroll'
 import GoodsList from '@/components/content/goods/GoodsList'
 
 import {getDetail,Goods,Shop,GoodsParam,EvaluateData,getRecommend} from '../../network/detail'
-import {itemListenerMixin} from '@/common/mixin'
+import {itemListenerMixin,backtopMixin} from '@/common/mixin'
 import {debounce} from '@/common/utils'
+import { mapActions } from 'vuex'
 export default {
   name:"Detail",
   data () {
@@ -54,9 +57,10 @@ export default {
       debouncegetoffsettop:null,
       currentindex:null
       
+      
     }
   },
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin,backtopMixin],
   components: {
     DetailNavBar,
     DetailSwiper,
@@ -69,6 +73,56 @@ export default {
     GoodsList,
     DetailBottomBar
     
+    
+  },
+  methods: {
+    ...mapActions(["addCart"]),
+    infoimageload(){
+        this.refresh()
+        // console.log('详情页图片加载完成了一次');
+        this.debouncegetoffsettop()
+    },
+    titleclick(index){
+      // console.log(index);
+      this.$refs.scroll.scrollTo(0,-this.detailscrollY[index],200)
+    },
+    scrollevent(position){
+      let length = this.detailscrollY.length 
+      let positionY = -position.y
+      for (let index = 0; index < length-1; index++) {
+          if(this.currentindex !== index && (positionY >= this.detailscrollY[index] && positionY < this.detailscrollY[index+1])){
+              this.currentindex = index
+              this.$refs.navbar.currentIndex = this.currentindex
+          }
+      }
+    },
+    scrollevent(position){
+      // 滚动事件监听backtop是否显示与隐藏
+      this.isShowBackTop = (-position.y) > 1000 
+    },
+    addShoppingCart(){
+      // 1.获取购物车所需要的信息
+      const product = {}
+      product.image = this.topImages[0]
+      product.title = this.goods.title
+      product.desc = this.goods.desc
+      product.price = this.goods.realPrice
+      product.iid = this.iid
+      // 将商品添加到购物车
+      // this.$store.commit('addCart', product)
+
+      this.addCart(product).then(res=>{
+        // console.log(res);
+        console.log(this.$toast);
+        this.$toast.show(res)
+      })
+
+      // this.$store.dispatch('addCart', product).then(res=>{
+      //   console.log(res);
+      // })
+
+
+    }
   },
   created () {
     // 保存传入的iid
@@ -95,7 +149,7 @@ export default {
     }),
     //请求推荐部分的数据
     getRecommend().then(res=>{
-      console.log(res);
+      // console.log(res);
       this.reconmends = res.data.list
     })
 
@@ -117,43 +171,6 @@ export default {
   }, 
   destroyed () {
     this.$bus.$off('itemImagLoad',this.itemImgListener)
-  },
-  methods: {
-    infoimageload(){
-        this.refresh()
-        // console.log('详情页图片加载完成了一次');
-        this.debouncegetoffsettop()
-    },
-    titleclick(index){
-      // console.log(index);
-      this.$refs.scroll.scrollTo(0,-this.detailscrollY[index],200)
-    },
-    scrollevent(position){
-      // 这里有点冗余 can't do better 
-      // 通过详情页组件 滚动事件监控当前滚动的高度（position.y）与{参数/评论/推荐}三个组件各自的offsetTop值
-      // 进行判断并赋值给子组件DetailNavBar 以改变navbar是否选中的样式
-      // if (this.currentindex != 0&&-position.y>=this.detailscrollY[0] && -position.y<this.detailscrollY[1]) {
-      //       this.currentindex = 0
-      //       this.$refs.navbar.currentIndex=this.currentindex
-      // }else if(this.currentindex != 1&&-position.y>=this.detailscrollY[1] && -position.y<this.detailscrollY[2]){
-      //       this.currentindex = 1
-      //        this.$refs.navbar.currentIndex=this.currentindex
-      // }else if(this.currentindex != 2&&-position.y>=this.detailscrollY[2] && -position.y<this.detailscrollY[3]){
-      //       this.currentindex = 2
-      //        this.$refs.navbar.currentIndex=this.currentindex
-      // }else if(this.currentindex != 3&&-position.y>this.detailscrollY[3] ){
-      //       this.currentindex = 3
-      //        this.$refs.navbar.currentIndex=this.currentindex
-      // }
-      let length = this.detailscrollY.length 
-      let positionY = -position.y
-      for (let index = 0; index < length-1; index++) {
-          if(this.currentindex !== index && (positionY >= this.detailscrollY[index] && positionY < this.detailscrollY[index+1])){
-              this.currentindex = index
-              this.$refs.navbar.currentIndex = this.currentindex
-          }
-      }
-    }
   }
 }
 </script>

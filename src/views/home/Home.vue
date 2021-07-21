@@ -12,9 +12,8 @@
     <recommend-view :recommends="recommend" />
     <feature-view />
     <tab-control v-show="!isShow" ref="tabControl" :titles="titles" @tabClick="tabClick"></tab-control>
-    <goods-list :goods="goods[currentType].list"></goods-list>
+    <goods-list :goods="goods[currentType].list"></goods-list> 
   </scroll>
-
   <back-top @click.native="backTop" v-show="isShowBackTop"/>
   </div>
 </template>
@@ -24,15 +23,13 @@ import NavBar from "@/components/common/navbar/NavBar";
 import TabControl from "@/components/content/tabControl/TabControl";
 import GoodsList from "@/components/content/goods/GoodsList";
 import Scroll from '@/components/common/scroll/Scroll'
-import BackTop from '@/components/content/backTop/BackTop'
-// import {debounce} from '@/common/utils'
 
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
 import FeatureView from "./childComps/FeatureView";
 
 import { getHomeMultidata, getHomeGoods } from "@/network/home";
-import {itemListenerMixin} from '@/common/mixin'
+import {itemListenerMixin,backtopMixin} from '@/common/mixin'
 export default {
   name: "Home",
   components: {
@@ -42,8 +39,7 @@ export default {
     FeatureView,
     TabControl,
     GoodsList,
-    Scroll,
-    BackTop
+    Scroll
     
   },
   data() {
@@ -68,7 +64,7 @@ export default {
       showFunny:true
     }
   },
-  mixins: [itemListenerMixin],
+  mixins: [itemListenerMixin,backtopMixin],
   created() {
     // 1.请求多个数据给banner和recommend
     this.getHomeMultidata();
@@ -81,7 +77,6 @@ export default {
   mounted () {
     // this.$refs.scroll.refresh()
     // console.log('事件总线方式。。。');
-    // console.log('我是首页home里面的内容');
   },
   // 通过keep-alve缓存 以下activated和deactivated两个函数 实现路由切换之前的页面浏览位置不变
   activated () {
@@ -115,21 +110,20 @@ export default {
     this.$refs.tabControl.currentindex = index
     },
     scrollevent(position){
-      // 滚动事件监听backtop是否显示与隐藏
-      this.isShowBackTop = (-position.y) > 1000 
       //设置tabCtrol滚动到指定位置便吸顶
       this.isShow = (-position.y) > this.TabControlOffTop
-      // console.log(position.y)
-
       // 设置滑稽 滚动到50的高度就隐藏
       this.showFunny = !((-position.y) > 50)
+      // 滚动事件监听backtop是否显示与隐藏
+      this.isShowBackTop = (-position.y) > 1000 
     },
+    // backTop(){
+    //   this.$refs.scroll.scrollTo(0,0)
+    // },
     loadMore(){
       // console.log('上拉加载更多');
       this.getHomeGoods(this.currentType) 
-      
     },
-    
     // 以下是网络请求的相关方法
     getHomeMultidata() {
       getHomeMultidata().then((result) => {
@@ -141,14 +135,10 @@ export default {
     getHomeGoods(type) {
       const page = this.goods[type].page + 1;
       getHomeGoods(type, page).then((result) => {
-        // console.log(result.data.list);
         this.goods[type].list.push(...result.data.list);
         this.goods[type].page += 1;
         this.$refs.scroll.finishPullUp()
       });
-    },
-    backTop(){
-      this.$refs.scroll.scrollTo(0,0)
     }
   }
 };
@@ -182,9 +172,6 @@ export default {
 /* 给better-scroll设置高度 */
 .content{
   height: calc(100% - 93px);
-  /* overflow: hidden; */
-  /* margin-top: 44px; */
-  /* top: 44px; */
 }
 .tab-cotrol{
   position: relative;

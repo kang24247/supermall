@@ -37,7 +37,6 @@
 <style scoped>
   .detail-evaluate{
     padding: 10px;
-    /* margin-bottom: 140px;  */
     font-size: 14px;
   }
   .menu{
