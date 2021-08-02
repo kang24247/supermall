@@ -1,11 +1,12 @@
 <template>
   <div class="goodslist">
-    <goods-list-item v-for="(item,index) in goods"  :goodsItem='item' :key="index" />
+      <goods-list-item v-for="(item,index) in goods"  :goodsItem='item' :key="index" />
   </div>
 </template>
 
 <script>
 import GoodsListItem from './GoodsListItem.vue'
+
 export default {
   name:'GoodsList',
   components: { 
@@ -24,6 +25,7 @@ export default {
 
 <style scoped>
   .goodslist{
+    width: 100vw;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;

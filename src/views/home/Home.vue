@@ -21,7 +21,7 @@
 <script>
 import NavBar from "@/components/common/navbar/NavBar";
 import TabControl from "@/components/content/tabControl/TabControl";
-import GoodsList from "@/components/content/goods/GoodsList";
+import GoodsList from "./childComps/goods/GoodsList";
 import Scroll from '@/components/common/scroll/Scroll'
 
 import HomeSwiper from "./childComps/HomeSwiper";
@@ -138,7 +138,7 @@ export default {
         this.goods[type].list.push(...result.data.list);
         this.goods[type].page += 1;
         this.$refs.scroll.finishPullUp()
-      });
+      })
     }
   }
 };

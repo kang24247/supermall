@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name:'TabConteol',
+  name:'TabControl',
   props: {
     titles:{
       type:Array,
@@ -46,7 +46,6 @@ export default {
   }
   .tabcontrol-item{
     width: 50px;
-    
   }
   .active{
     color: var( --color-high-text);

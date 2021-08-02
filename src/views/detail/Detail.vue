@@ -10,7 +10,6 @@
       <detail-user-evaluate :EvaluateData='EvaluateData' ref="evaluate"/>
       <goods-list :goods='reconmends' ref="recommend"/>
     </scroll>
-    
     <detail-bottom-bar @addShoppingCart='addShoppingCart'/>
     <back-top @click.native="backTop" v-show="isShowBackTop"/>
   </div>
@@ -28,7 +27,7 @@ import DetailUserEvaluate from './childComps/DetailUserEvaluate'
 import DetailBottomBar from './childComps/DetailBottomBar.vue'
 
 import Scroll from '@/components/common/scroll/Scroll'
-import GoodsList from '@/components/content/goods/GoodsList'
+import GoodsList from '../home/childComps/goods/GoodsList'
 
 import {getDetail,Goods,Shop,GoodsParam,EvaluateData,getRecommend} from '../../network/detail'
 import {itemListenerMixin,backtopMixin} from '@/common/mixin'
@@ -117,9 +116,7 @@ export default {
         this.$toast.show(res)
       })
 
-      // this.$store.dispatch('addCart', product).then(res=>{
-      //   console.log(res);
-      // })
+      
 
 
     }
@@ -129,7 +126,7 @@ export default {
     this.iid = this.$route.params.iid
     // 根据iid请求详情数据
     getDetail(this.iid).then(res=>{
-      // console.log(res);
+      console.log(res);
       // 获取商品详情页顶部banner img数据
       const data = res.result
       this.topImages = data.itemInfo.topImages
@@ -142,7 +139,7 @@ export default {
       this.detailInfo.imgdata = data.detailInfo.detailImage[0]
       // 请求商品详情页的规格数据
       this.paramInfo = new GoodsParam(data.itemParams.info,data.itemParams.rule)
-      //请求商品商品详情页的用户评论数据   评论时间没有找到具体点的毫秒数据 待探索@@@
+      //请求商品商品详情页的用户评论数据  
       if(data.rate.cRate>0){
         this.EvaluateData = new EvaluateData(data.rate.list[0],data.rate.list[0].user)
       }

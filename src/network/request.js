@@ -1,3 +1,4 @@
+//axios的封装 避免作者不再维护
 import axios from 'axios'
 
 export function request(config){

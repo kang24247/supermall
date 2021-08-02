@@ -3,19 +3,12 @@
     <nav-bar class="profile-navbar">
       <div slot="center">我的档案</div>
     </nav-bar>
-    <div class="login-registration">
+    <div class="login-registration" @click="toLogin">
       <div class="profilepicture">
-        <img src="@/assets/img/profile/avatar.svg" alt="">
+        <img src="@/assets/img/profile/DogNightFork.jpg" alt="">
       </div>
       <div class="loginregist">
-        <div class="loginregist-one">登录/注册</div>
-        <div class="loginregist-two">
-          <img src="@/assets/img/profile/phone.svg" >
-          <span>暂无绑定手机号</span>
-        </div>
-      </div>
-      <div class="login-icon">
-        <span>></span>
+        <div class="loginregist-one">Admin,欢迎回来 ~</div>
       </div>
     </div>
 
@@ -64,6 +57,11 @@ export default {
   name:'Profile',
   components: {
     NavBar
+  },
+  methods: {
+    toLogin () {
+      this.$router.push('/login')
+    }
   }
 }
 </script>
@@ -90,19 +88,12 @@ export default {
     margin-left: -20px;
   }
   .profilepicture img{
+    border-radius: 50%;
     width: 60px;
     height: 60px;
   }
   .loginregist{
-    margin-left: -60px;
-  }
-  .loginregist-two{
-    font-size: 14px;
-  }
-  .loginregist-two img{
-    width: 14px;
-    height: 14px;
-    vertical-align: middle;
+    margin-left: -40px;
   }
   .login-icon{
     font-size: 24px;

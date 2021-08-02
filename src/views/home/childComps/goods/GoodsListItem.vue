@@ -1,6 +1,6 @@
 <template>
-  <div class="goodslistitem" @click="itemClick">
-    <img v-lazy="showImage" @load="imagLoad" >
+  <div class="goodslistitem" @click="itemClick" v-if="showImage">
+    <img v-lazy="showImage" @load="imagLoad" :key="showImage">
     <div class="goodsinfo">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}} </span> 
@@ -20,18 +20,25 @@ export default {
       }
     }
   },
+  // data () {
+  //   return {
+  //     goodsItem: this.goodsItem
+  //   }
+  // },
   methods: {
     imagLoad(){
       this.$bus.$emit("itemImagLoad")
     },
     itemClick(){
-      // console.log('跳转详情页');
-      this.$router.push('/detail/'+this.goodsItem.iid)
+      let iid = this.goodsItem.iid;
+      
+      this.$router.push('/detail/' + iid)
+      
     }
   },
   computed: {
     showImage(){
-      return this.goodsItem.image || this.goodsItem.show.img
+      return this.goodsItem.img || this.goodsItem.image || this.goodsItem.show.img
     }
   }
 }
@@ -39,10 +46,10 @@ export default {
 
 <style scoped>
   .goodslistitem{
-    width: 46%;
+    width: 48%;
+    position: relative;
     padding-bottom: 25px;
     padding: 5px;
-    
   }
   .goodslistitem img{
     width: 100%;
@@ -61,6 +68,5 @@ export default {
   .collect::before{
     content: '☆';
     font-size: 0.9rem;
-    /* background: url('../../../assets/img/common/collect.svg'); */
   }
 </style>

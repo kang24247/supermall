@@ -10,6 +10,9 @@
         <div class="evacontent">{{EvaluateData.content}}</div>
         <span class="time">{{EvaluateData.createdTime}}</span>
         <span class="style-cloth">{{EvaluateData.style}}</span>
+        <div class="info-imgs">
+          <img :src="item" v-for="(item, index) in EvaluateData.images" :key="index">
+        </div>
       </div>
   </div>
   
@@ -63,5 +66,12 @@
   .menu-content .style-cloth{
     margin-left: 20px;
   }
-  
+  .info-imgs {
+    margin-top: 10px;
+  }
+  .info-imgs img {
+    width: 70px;
+    height: 70px;
+    margin-right: 5px;
+  }
 </style>

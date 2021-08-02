@@ -32,14 +32,18 @@ export default {
   },
   methods: {
     itemClick(){
-      this.$router.push(this.path)
+      let token = window.sessionStorage.getItem('token')
+      if( this.path === '/login') {
+        token ? this.$router.push('/profile') : this.$router.push(this.path)
+      }else{
+        this.$router.push(this.path)
+      }
     }
   }
 }
 </script>
 
 <style scoped>
- 
  .tab-bar-item{
     flex:1;
     height: 49px;
@@ -53,7 +57,4 @@ export default {
   .tab-bar-item .item-text{
       font-size: 14px;
   }
-  /* .active{
-    color: indianred;
-  } */
 </style>

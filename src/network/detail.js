@@ -1,4 +1,4 @@
-import { request } from "./request";
+import { request } from "./request"
 
 export function getDetail(iid){
   return request({
@@ -53,5 +53,6 @@ export class EvaluateData{
     this.style = arrone.style
     this.avatar = user.avatar
     this.uname = user.uname
+    this.images = arrone.images
   }
 }

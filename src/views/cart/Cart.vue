@@ -36,8 +36,7 @@ export default {
     })
   },
   activated () {
-    console.log('购物车页面唤醒----启动刷新');
-  this.$refs.scroll.refresh()
+    this.$refs.scroll.refresh()
   }
 }
 </script>

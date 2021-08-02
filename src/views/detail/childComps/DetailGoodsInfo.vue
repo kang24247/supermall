@@ -34,8 +34,6 @@
       // console.log('图片加载完成一张');
       // if ( ++this.counter === this.imagesLength ){
         this.$emit("infoimageload")
-        // console.log('我进来了');//逻辑没有进去  目前考虑是watch问题 暂未解决
-      // }
     
     }
   },

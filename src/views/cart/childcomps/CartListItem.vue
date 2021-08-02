@@ -22,8 +22,10 @@
             <div class="product-price">
             ￥{{productprice}}
             </div>
-            <div class="product-number">
-            x{{product.count}}
+            <div id="wrapper">
+                <div class="minus" @click="minusnumber"><button> ▼ </button></div>
+                <div class="product-number">x{{product.count}} </div>
+                <div class="add" @click="addnumber"><button> ▲ </button></div>
             </div>
         </div>
      </div>
@@ -45,7 +47,14 @@ export default {
     methods: {
         ischecked(){
             this.product.checked = !this.product.checked
-
+        },
+        minusnumber(){
+            if (this.product.count > 1) {
+                this.product.count--
+            }
+        },
+        addnumber(){
+            this.product.count++
         }
     },
     computed: {
@@ -95,7 +104,6 @@ export default {
         width: 66%;
     }
     .product-font .product-title ,.product-font .product-desc{
-        /* font-size: 12px; */
         width: 90%;
         white-space: nowrap;
         overflow: hidden;
@@ -113,5 +121,15 @@ export default {
     .price-number .product-price{
         color: rgb(243, 19, 19);
     }
-    
+    #wrapper{
+        display: flex;
+        justify-content: space-evenly;
+        width: 40%;
+    }
+    .price-number button{
+        font-size: 16px;
+        border-radius: 4px;
+        border: 1px solid #fff;
+
+    }
 </style>>
