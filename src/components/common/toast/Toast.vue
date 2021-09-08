@@ -15,7 +15,6 @@ export default {
     },
     methods: {
         show(message,time=1200){
-
             this.isShow =true
             this.message = message
             setTimeout(()=>{

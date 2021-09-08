@@ -7,10 +7,7 @@
 <script>
 
 export default {
-  name:'TabBar',
-  components: {
-    
-  }
+  name:'TabBar'
 }
 </script>
 

@@ -115,10 +115,6 @@ export default {
         console.log(this.$toast);
         this.$toast.show(res)
       })
-
-      
-
-
     }
   },
   created () {
